@@ -1,35 +1,30 @@
-define [
-], ->
+class Controller
 
-  noop = ->
+  preInitialize: noop
+  postInitialize: noop
 
-  class Controller
+  constructor: (dispatcher, navigator) ->
+    throw new Error 'dispatcher is null!! in controller!' unless dispatcher?
+    @dispatcher = dispatcher
+    @beforeFilters = []
+    @initialize()
 
-    preInitialize: noop
-    postInitialize: noop
+  navigate: (url, options) ->
+    @dispatcher.navigator.navigate url, options
 
-    constructor: (dispatcher, navigator) ->
-      throw new Error 'dispatcher is null!! in controller!' unless dispatcher?
-      @dispatcher = dispatcher
-      @beforeFilters = []
-      @initialize()
+  initialize: ->
+    @preInitialize()
+    @postInitialize()
 
-    navigate: (url, options) ->
-      @dispatcher.navigator.navigate url, options
+  # Example:
+  #   @beforeFilter @authenticate, except: ['login']
+  beforeFilter: (fn, options) ->
+    @beforeFilters.push(fn: fn, options: options)
 
-    initialize: ->
-      @preInitialize()
-      @postInitialize()
+  navigate: (url, options) ->
+    @dispatcher.navigator.navigate(url, options)
 
-    # Example:
-    #   @beforeFilter @authenticate, except: ['login']
-    beforeFilter: (fn, options) ->
-      @beforeFilters.push(fn: fn, options: options)
-
-    navigate: (url, options) ->
-      @dispatcher.navigator.navigate(url, options)
-
-    # Actions should call this to render
-    render: (view) ->
-      @dispatcher.handleControllerRender @, view
+  # Actions should call this to render
+  render: (view) ->
+    @dispatcher.handleControllerRender @, view
 
