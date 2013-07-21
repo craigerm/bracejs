@@ -1,0 +1,35 @@
+{
+  "name": "bracejs",
+  "description": "Framework on top of bacbkone",
+  "version": "0.0.1",
+  "homepage": "https://github.com/craigerm/bracejs",
+  "main": "lib/brace.js",
+  "keywords": [
+    "backbone"
+  ],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/craigerm/bracejs/blob/master/MIT-LICENSE"
+    }
+  ],
+  "author": {
+    "name": "Craig MacGregor",
+    "email": "craigerm@gmail.com",
+    "web": "http://allthingscraig.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/craigerm/bracejs.git"
+  },
+  "github": "https://github.com/craigerm/bracejs",
+  "dependencies": {
+    "backbone": "~1.0.0"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-concat": "~0.1.2",
+    "grunt-contrib-coffee": "~0.7.0",
+    "grunt-preprocess": "~2.3.0"
+  }
+}
