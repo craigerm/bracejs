@@ -1,34 +1,42 @@
-class Router extends Backbone.Events
+  #define [
+  #  'backbone'
+  #  'spine/util'
+  #  'spine/custom-router'
+  #  'spine/dispatcher'
+  #  'underscore'
+  #], (Backbone, util, CustomRouter, Dispatcher, _) ->
 
-  constructor: (routes, defaultLayout) ->
-    _.extend @, Backbone.Events
-    @pendingFlash = null
-    @routes = routes
-    @routeMap = {}
+  class Router extends Backbone.Events
 
-  handleRoute: (a,b,c,d) ->
+    constructor: (routes, defaultLayout) ->
+      _.extend @, Backbone.Events
+      @pendingFlash = null
+      @routes = routes
+      @routeMap = {}
 
-  onRouteChange: (route) ->
-    info = @loadRouteInfo(route)
-    @trigger 'route-change', info
+    handleRoute: (a,b,c,d) ->
 
-  loadRouteInfo: (route) ->
-    route = route.substr(1) if route[0] == '/'
-    route = route.substr(0,route.length - 1) if route[route.length - 1] == '/'
-    @routeMap[route]
+    onRouteChange: (route) ->
+      info = @loadRouteInfo(route)
+      @trigger 'route-change', info
 
-  createResource: (path) ->
-    parts = path.split('#')
-    name = parts[0] + '_controller'
-    controller: name, action: parts[1]
+    loadRouteInfo: (route) ->
+      route = route.substr(1) if route[0] == '/'
+      route = route.substr(0,route.length - 1) if route[route.length - 1] == '/'
+      @routeMap[route]
 
-  start: ->
-    @customRouter = new CustomRouter(spine_router: @)
-    @routes(_.bind @match, @)
-    Backbone.history.start(pushState: true)
+    createResource: (path) ->
+      parts = path.split('#')
+      name = parts[0] + '_controller'
+      controller: name, action: parts[1]
 
-  match: (route, path) ->
-    info = @createResource(path)
-    @routeMap[route] = info
-    #console.log 'mapping "%s" to => %s#%s', route, info.controller, info.action
+    start: ->
+      @customRouter = new CustomRouter(spine_router: @)
+      @routes(_.bind @match, @)
+      Backbone.history.start(pushState: true)
+
+    match: (route, path) ->
+      info = @createResource(path)
+      @routeMap[route] = info
+      #console.log 'mapping "%s" to => %s#%s', route, info.controller, info.action
 

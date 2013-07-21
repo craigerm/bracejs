@@ -1,1 +1,1 @@
-class Model extends Backbone.Model
+  class Model extends Backbone.Model

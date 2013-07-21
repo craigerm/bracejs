@@ -12,14 +12,17 @@ define [
 # @include ../navigator.js.coffee
 # @include ../custom-router.js.coffee
 # @include ../controller.js.coffee
+# @include ../router.js.coffee
 # @include ../view.js.coffee
 # @include ../layout-manager.js.coffee
 # @include ../layout.js.coffee
 # @include ../dispatcher.js.coffee
 # @include ../application.js.coffee
 
-  # Expost any objects
+  # Expose the objects
   Brace =
+    Application: Application
+    Controller: Controller
     Util: Util
     View: View
     Model: Model
