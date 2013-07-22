@@ -21,21 +21,64 @@ module.exports = (grunt) ->
     preprocess:
       core:
         files:
-          'lib/core/brace.js.coffee': 'src/build/core.js.coffee'
+          'tmp/brace-core.coffee': 'src/build/core.coffee'
       
     concat:
       options:
         banner: '<%= meta.banner %>'
       build:
-        src: ['lib/core/brace.js.coffee']
-        dest: 'lib/brace.js.coffee'
+        src: ['tmp/brace-core.coffee']
+        dest: 'lib/brace.coffee'
+
+    coffee:
+      options:
+        bare: true
+      sources:
+        files:
+          'tmp/src/brace.js': 'lib/brace.coffee'
+      specs:
+        expand: true
+        src: 'spec/*.coffee'
+        dest: 'tmp/spec/'
+        flatten: true
+        ext: '.js'
+
+    watch:
+      specs:
+        files: ['spec/*.coffee']
+        tasks: ['coffee:specs']
+      sources:
+        files: ['src/*.coffee']
+        tasks: ['coffee:sources']
+      jsfiles:
+        files: ['spec/js/*.js', 'lib/brace.coffee']
+        tasks: ['jasmine:specs']
 
     jasmine:
-      specs: 'spec/**/*.js.coffee'
+      options:
+        keepRunner: true
+        specs: 'tmp/spec/*.js'
+        vendor: [
+          'vendor/javascripts/jquery.js',
+          'vendor/javascripts/underscore.js',
+          'vendor/javascripts/backbone.js'
+        ]
+      sources:
+        src: ['tmp/src/brace.js']
+
+    connect:
+      server:
+        options:
+          port: 8000
 
   grunt.loadNpmTasks 'grunt-preprocess'
   grunt.loadNpmTasks 'grunt-contrib-concat'
   grunt.loadNpmTasks 'grunt-contrib-jasmine'
+  grunt.loadNpmTasks 'grunt-contrib-watch'
+  grunt.loadNpmTasks 'grunt-contrib-connect'
+  grunt.loadNpmTasks 'grunt-contrib-coffee'
 
+  grunt.registerTask 'build', ['preprocess', 'concat']
+  grunt.registerTask 'test', ['build','coffee', 'jasmine:sources']
   grunt.registerTask 'default', ['preprocess', 'concat']
 
