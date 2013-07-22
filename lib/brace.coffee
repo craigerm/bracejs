@@ -6,11 +6,11 @@
 # Distributed under MIT license
 #
 # https://github.com/craigerm/bracejs
-#define [
-#  'underscore',
-#  'backbone',
-#  'jquery'
-#], (_, Backbone, $) ->
+define [
+  'underscore',
+  'backbone',
+  'jquery'
+], (_, Backbone, $) ->
 
   noop = ->
 
@@ -21,10 +21,11 @@
       return if context[key]
       throw new Error("The value '#{key}' must be set on the sub class of 'Spine.#{className}'")
 
-    pluralize: (str) ->
-      last = str.substr(str.length - 1)
-      return str + 'es' if last is 's'
-      return str + 's'
+    pluralize: (word) ->
+      len = word.length
+      return word + 'es' if word.match /(o|s)$/i
+      return word.substring(0, len - 1)  + 'ves' if word.match /f$/i
+      return word + 's'
 
     # Example change "name" to "Name"
     capitalize: (str) ->
@@ -34,6 +35,7 @@
     humanize: (name) ->
       words = _.map name.split('_'), (word) -> Util.capitalize(word)
       return words.join(' ')
+
 
   EventHooks =
     start: (router) ->
@@ -499,7 +501,7 @@
 
 
   # Expose the objects
-  @Brace =
+  Brace =
     Application: Application
     Controller: Controller
     Util: Util
