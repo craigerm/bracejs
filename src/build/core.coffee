@@ -6,18 +6,18 @@ define [
 
   noop = ->
 
-# @include ../util.js.coffee
-# @include ../event-hooks.js.coffee
-# @include ../model.js.coffee
-# @include ../navigator.js.coffee
-# @include ../custom-router.js.coffee
-# @include ../controller.js.coffee
-# @include ../router.js.coffee
-# @include ../view.js.coffee
-# @include ../layout-manager.js.coffee
-# @include ../layout.js.coffee
-# @include ../dispatcher.js.coffee
-# @include ../application.js.coffee
+# @include ../util.coffee
+# @include ../event-hooks.coffee
+# @include ../model.coffee
+# @include ../navigator.coffee
+# @include ../custom-router.coffee
+# @include ../controller.coffee
+# @include ../router.coffee
+# @include ../view.coffee
+# @include ../layout-manager.coffee
+# @include ../layout.coffee
+# @include ../dispatcher.coffee
+# @include ../application.coffee
 
   # Expose the objects
   Brace =
