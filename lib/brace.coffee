@@ -19,7 +19,7 @@ define [
     # Ensures that a key exists on the class. I.e is set
     ensure: (context, key, className) ->
       return if context[key]
-      throw new Error("The value '#{key}' must be set on the sub class of 'Spine.#{className}'")
+      throw new Error("The value '#{key}' must be set on '#{className}'")
 
     pluralize: (word) ->
       len = word.length
