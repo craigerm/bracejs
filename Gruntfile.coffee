@@ -31,8 +31,6 @@ module.exports = (grunt) ->
         dest: 'lib/brace.coffee'
 
     coffee:
-      options:
-        bare: true
       sources:
         files:
           'tmp/src/brace.js': 'lib/brace.coffee'
@@ -51,20 +49,38 @@ module.exports = (grunt) ->
         files: ['src/*.coffee']
         tasks: ['coffee:sources']
       jsfiles:
-        files: ['spec/js/*.js', 'lib/brace.coffee']
-        tasks: ['jasmine:specs']
+        files: ['tmp/**/*.js']
+        tasks: ['jasmine:sources']
 
     jasmine:
+      sources:
+        src: ['src/brace.js']
       options:
         keepRunner: true
-        specs: 'tmp/spec/*.js'
-        vendor: [
-          'vendor/javascripts/jquery.js',
-          'vendor/javascripts/underscore.js',
-          'vendor/javascripts/backbone.js'
-        ]
-      sources:
-        src: ['tmp/src/brace.js']
+        specs: 'tmp/spec/util.js'
+        template: require('grunt-template-jasmine-requirejs')
+        templateOptions:
+          requireConfig:
+            baseUrl: 'tmp'
+            paths:
+              jquery: '../vendor/javascripts/jquery'
+              underscore: '../vendor/javascripts/underscore'
+              backbone: '../vendor/javascripts/backbone'
+              brace: 'src/brace'
+            shim:
+              jquery:
+                exports: '$'
+                init: () ->
+                  @$.noConflict()
+              underscore:
+                exports: '_'
+                init: () ->
+                  @_.noConflict()
+              backbone:
+                exports: 'Backbone'
+                deps: ['underscore', 'jquery']
+                init: () ->
+                  @Backbone.noConflict()
 
     connect:
       server:
@@ -77,6 +93,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-watch'
   grunt.loadNpmTasks 'grunt-contrib-connect'
   grunt.loadNpmTasks 'grunt-contrib-coffee'
+  grunt.loadNpmTasks 'grunt-notify'
 
   grunt.registerTask 'build', ['preprocess', 'concat']
   grunt.registerTask 'test', ['build','coffee', 'jasmine:sources']
