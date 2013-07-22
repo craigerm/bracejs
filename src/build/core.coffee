@@ -1,8 +1,8 @@
-define [
-  'underscore',
-  'backbone',
-  'jquery'
-], (_, Backbone, $) ->
+#define [
+#  'underscore',
+#  'backbone',
+#  'jquery'
+#], (_, Backbone, $) ->
 
   noop = ->
 
@@ -20,7 +20,7 @@ define [
 # @include ../application.js.coffee
 
   # Expose the objects
-  Brace =
+  @Brace =
     Application: Application
     Controller: Controller
     Util: Util
