@@ -6,11 +6,11 @@
 # Distributed under MIT license
 #
 # https://github.com/craigerm/bracejs
-define [
-  'underscore',
-  'backbone',
-  'jquery'
-], (_, Backbone, $) ->
+#define [
+#  'underscore',
+#  'backbone',
+#  'jquery'
+#], (_, Backbone, $) ->
 
   noop = ->
 
@@ -499,7 +499,7 @@ define [
 
 
   # Expose the objects
-  Brace =
+  @Brace =
     Application: Application
     Controller: Controller
     Util: Util
