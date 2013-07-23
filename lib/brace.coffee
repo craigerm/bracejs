@@ -120,15 +120,7 @@ define [
       @dispatcher.handleControllerRender @, view
 
 
-  #define [
-  #  'backbone'
-  #  'spine/util'
-  #  'spine/custom-router'
-  #  'spine/dispatcher'
-  #  'underscore'
-  #], (Backbone, util, CustomRouter, Dispatcher, _) ->
-
-  class Router extends Backbone.Events
+  class Router
 
     constructor: (routes, defaultLayout) ->
       _.extend @, Backbone.Events
@@ -508,3 +500,4 @@ define [
     View: View
     Model: Model
     Layout: Layout
+    Router: Router
