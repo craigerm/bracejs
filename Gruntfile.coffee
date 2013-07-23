@@ -56,6 +56,7 @@ module.exports = (grunt) ->
       sources:
         src: ['src/brace.js']
       options:
+        helpers: 'spec/helpers/**/*.js'
         keepRunner: true
         specs: 'tmp/spec/**/*.js'
         template: require('grunt-template-jasmine-requirejs')
