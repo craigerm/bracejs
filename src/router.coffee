@@ -1,5 +1,4 @@
-  class Router extends Backbone.Events
-
+  class Router
 
     constructor: (routes, defaultLayout) ->
       _.extend @, Backbone.Events
