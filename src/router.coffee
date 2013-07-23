@@ -1,12 +1,5 @@
-  #define [
-  #  'backbone'
-  #  'spine/util'
-  #  'spine/custom-router'
-  #  'spine/dispatcher'
-  #  'underscore'
-  #], (Backbone, util, CustomRouter, Dispatcher, _) ->
-
   class Router extends Backbone.Events
+
 
     constructor: (routes, defaultLayout) ->
       _.extend @, Backbone.Events
