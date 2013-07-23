@@ -27,3 +27,4 @@ define [
     View: View
     Model: Model
     Layout: Layout
+    Router: Router
