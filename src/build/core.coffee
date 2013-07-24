@@ -1,12 +1,12 @@
 define [
   'underscore',
   'backbone',
-  'jquery'
-], (_, Backbone, $) ->
-
-  noop = ->
+], (_, Backbone) ->
 
   Brace = {}
+  noop = ->
+
+  $ = Brace.$ = Backbone.$
 
 # @include ../util.coffee
 # @include ../contract.coffee

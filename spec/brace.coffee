@@ -1,4 +1,10 @@
-define ['brace', 'underscore'], (Brace, _) ->
+define ['brace', 'backbone', 'underscore'], (Brace, Backbone, _) ->
+
+  describe 'dependencies', ->
+
+    it 'has jQuery like lib defined', ->
+      expect($).toBeDefined()
+      expect(Brace.$).toBeDefined()
 
   describe 'namespace', ->
 
