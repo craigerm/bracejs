@@ -38,7 +38,7 @@
 
     createUniqueID: (layout) ->
       # For now return a random number
-      Math.random() * 9999999999
+      Math.random() * 99999
 
     # Refactor this out we can can create a view from a raw html fragment
     makeContentView: (html) ->
