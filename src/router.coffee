@@ -1,12 +1,16 @@
+  # TODO: Refactor this and the CustomRouter into one class. Remove
+  # constructor. 
   class Router
 
-    constructor: (routes) ->
+    constructor: (routes, options) ->
+      @options = _.extend({}, pushState: true, options)
       _.extend @, Backbone.Events
       @pendingFlash = null
       @routes = routes
       @routeMap = {}
 
     onRouteChange: (route) ->
+      console.log 'Router:onRouteChange = %', route
       info = @loadRouteInfo(route)
       @trigger 'route-change', info
 
@@ -21,11 +25,15 @@
       controller: name, action: parts[1]
 
     start: ->
-      @customRouter = new CustomRouter(brace_router: @)
+      @customRouter = new CustomRouter()
+      @customRouter.on 'route-changed', _.bind @onRouteChange, @
       @routes(_.bind @match, @)
-      Backbone.history.start(pushState: true)
+      Backbone.history.start(@options)
 
     match: (route, path) ->
       info = @createResource(path)
       @routeMap[route] = info
+
+    navigate: (url) ->
+      @customRouter.navigate url, trigger: true
 

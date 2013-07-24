@@ -1,20 +1,23 @@
   CustomRouter = Backbone.Router.extend
 
-    initialize: (options) ->
-      @brace_router = options.brace_router
+    initialize: ->
       @listenTo @, 'route', @onRouteChange
 
     routes:
       '*notFound': 'handleRoute'
 
-    onRouteChange: () ->
+    onRouteChange: (name, route)->
+
       # Not sure the best way to get the url
-      url = location.pathname #???
+      # This needs to be reworked.
+      url = location.pathname
+      if route and route[0]
+        url = route[0]
 
-      # Not sure if we should do that or the spine router
-      @navigate url, trigger: true
-
-      @brace_router.onRouteChange(url)
+      # Not sure if we should do that or the brace router
+      #@navigate url, trigger: true
+      console.log 'triggering route-changed %s', url
+      @trigger 'route-changed', url
 
     handleRoute: ->
       # noop
