@@ -20,6 +20,9 @@ define ['brace', 'underscore'], (Brace, _) ->
     it 'has Layout', ->
       expect(_.isObject(Brace.Layout)).toBeTruthy()
 
+    it 'has LayoutManager', ->
+      expect(_.isObject(Brace.LayoutManager)).toBeTruthy()
+
     it 'has Router', ->
       expect(_.isObject(Brace.Router)).toBeTruthy()
 

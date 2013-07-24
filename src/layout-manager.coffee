@@ -48,14 +48,14 @@
           @$el
       new ContentView()
 
-    shouldRenderLayout: (currentLayout, newLayout) ->
+    shouldRenderLayout: (currentLayout, LayoutType) ->
 
       # If no layout is currently set we should render
       return true unless currentLayout
 
       # If the new layout doesn't have a hash code we know we haven't processed
       # it yet so we should render it because we know it is different.
-      if !newLayout.prototype.__hashCode?
+      if !LayoutType.prototype.__hashCode?
         return true
 
-      return @currentLayout.__hashCode != newLayout.prototype.__hashCode
+      return currentLayout.__hashCode != LayoutType.prototype.__hashCode
