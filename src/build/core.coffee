@@ -29,6 +29,7 @@ define [
   Brace.View = View
   Brace.Model = Model
   Brace.Layout = Layout
+  Brace.Navigator = Navigator
   Brace.LayoutManager = LayoutManager
   Brace.Router = Router
   Brace.CustomRouter = CustomRouter
