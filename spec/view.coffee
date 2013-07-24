@@ -1,4 +1,4 @@
-define ['brace'], (Brace) ->
+define ['brace', 'underscore'], (Brace, _) ->
 
   describe 'view', ->
 
