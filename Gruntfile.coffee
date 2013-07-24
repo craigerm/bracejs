@@ -47,7 +47,7 @@ module.exports = (grunt) ->
         tasks: ['coffee:specs']
       sources:
         files: ['src/*.coffee']
-        tasks: ['coffee:sources']
+        tasks: ['build', 'coffee:sources']
       jsfiles:
         files: ['tmp/**/*.js']
         tasks: ['jasmine:sources']
