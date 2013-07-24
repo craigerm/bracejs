@@ -17,23 +17,20 @@
     handle404: ->
       throw new Error '404 ERROR IN DISPATCHER!'
 
-    getControllerPath: (controller_name) ->
-      "controllers/#{controller_name}"
+    getControllerPath: (info) ->
+      "#{info.namespace}/#{info.controller_name}"
 
     executeAction: (info) ->
 
       dispatcher = @
-      controller_path = @getControllerPath(info.controller)
+      controller_path = @getControllerPath(info)
 
       # Load controller
       require [controller_path], (Controller) ->
 
-        console.log 'FOUND CONTROLLER %s', info.controller
-
-        # Create controller instance
         controller = new Controller(dispatcher)
         action = controller[info.action]
-        throw new Error("CONTROLLER IS MISSING ACTION #{info.controller}=>#{info.action}") unless action
+        Contract.present action, "Controller must have action defined (#{info.controller}=>#{info.action})"
 
         # Handle before filters here
         promise = dispatcher.handleBeforeFilters(controller, info.action)

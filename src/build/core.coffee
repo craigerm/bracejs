@@ -25,6 +25,7 @@ define [
   # Expose the objects. Will refactor this later
   Brace.Contract = Contract
   Brace.Application = Application
+  Brace.Dispatcher = Dispatcher
   Brace.Controller = Controller
   Brace.Util = Util
   Brace.View = View
