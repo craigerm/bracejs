@@ -1,12 +1,10 @@
   class Router
 
-    constructor: (routes, defaultLayout) ->
+    constructor: (routes) ->
       _.extend @, Backbone.Events
       @pendingFlash = null
       @routes = routes
       @routeMap = {}
-
-    handleRoute: (a,b,c,d) ->
 
     onRouteChange: (route) ->
       info = @loadRouteInfo(route)
@@ -30,5 +28,4 @@
     match: (route, path) ->
       info = @createResource(path)
       @routeMap[route] = info
-      #console.log 'mapping "%s" to => %s#%s', route, info.controller, info.action
 
