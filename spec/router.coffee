@@ -28,6 +28,16 @@ define ['brace','backbone'], (Brace, Backbone) ->
         expect(info.controller).toBe('users_controller')
         expect(info.action).toBe('index')
 
+      it 'returns default namespace if not included', ->
+        info = router.createResource('users#index')
+        expect(info.namespace).toBe('controllers')
+
+      it 'returns namespace if user specified', ->
+        info = router.createResource('users/main#index')
+        expect(info.controller).toBe('main_controller')
+        expect(info.action).toBe('index')
+        expect(info.namespace).toBe('users')
+
     describe '#match', ->
       it 'adds simple route info to map', ->
         router.match('users/new', 'users#create')

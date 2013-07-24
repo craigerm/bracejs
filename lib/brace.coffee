@@ -135,6 +135,8 @@ define [
   # constructor. 
   class Router
 
+    defaultControllerNamespace: 'controllers'
+
     constructor: (routes, options) ->
       @options = _.extend({}, pushState: true, options)
       _.extend @, Backbone.Events
@@ -155,7 +157,16 @@ define [
     createResource: (path) ->
       parts = path.split('#')
       name = parts[0] + '_controller'
-      controller: name, action: parts[1]
+      paths = name.split('/')
+      name = _.last(paths)
+      throw new Error 'We only support 1 level of paths for controllers' if paths.length > 2
+      namespace = paths[0] unless paths.length is 1
+      namespace = @defaultControllerNamespace if paths.length is 1
+
+      # Return info about this resource
+      controller: name
+      action: parts[1]
+      namespace: namespace
 
     start: ->
       @customRouter = new CustomRouter()
