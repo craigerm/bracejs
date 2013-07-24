@@ -13,10 +13,10 @@
       @preRender()
       element = $(@container)
 
-      throw new Error "Layout cannot find the selector '#{@container}'" if element.length == 0
-      throw new Error "Layout must have template!" unless @template
-      throw new Error "Layout must have at least a 'content' region!" unless @regions.content
-      throw new Error "Navigator must be set on layout" unless @options.navigator
+      Contract.notEmpty element, 'Layout cannot find the selector'
+      Contract.present @template, 'Layout must have template'
+      Contract.present @regions.content, 'Layout must have aat least a "content" region'
+      Contract.present @options.navigator, 'Navigator must be set on the layout'
 
       @renderTemplate()
       @renderRegions()
