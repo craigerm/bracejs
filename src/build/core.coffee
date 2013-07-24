@@ -23,6 +23,7 @@ define [
 # @include ../application.coffee
 
   # Expose the objects. Will refactor this later
+  Brace.Contract = Contract
   Brace.Application = Application
   Brace.Controller = Controller
   Brace.Util = Util
