@@ -9,10 +9,12 @@
 define [
   'underscore',
   'backbone',
-  'jquery'
-], (_, Backbone, $) ->
+], (_, Backbone) ->
 
+  Brace = {}
   noop = ->
+
+  $ = Brace.$ = Backbone.$
 
   Util =
 
@@ -37,53 +39,62 @@ define [
       return words.join(' ')
 
 
+  Contract =
+    notEmpty: (arr, msg) ->
+      return if arr && arr.length > 0
+      throw new Error(msg)
+
+    present: (obj, msg) ->
+      throw new Error msg unless obj
+
+
+
+
   EventHooks =
+
     start: (router) ->
 
       # Handle any links to backbone navigator
       $(document).on 'click', 'a[href^="/"]', (event) ->
         href = $(event.currentTarget).attr('href')
         event.preventDefault()
-
-        # Handle any allowed links. Logout etc.
-        # Handle alt key, ctrl, etc..   
         url = href.replace(/^\//,'').replace('\#\!\/','')
-
-        router.customRouter.navigate url, trigger: true
+        router.navigate url, trigger: true
 
   class Model extends Backbone.Model
 
   class Navigator
 
     constructor: (router) ->
-      throw new Error 'router must be passed into navigator' unless router
+      Contract.present router, 'router must be passed into navigator'
       @router = router
       _.extend(@, Backbone.Events)
 
     navigate: (url, options) ->
-      #if options.flash
-      #  @trigger 'flash', options
       @router.pendingFlash = options.flash if options
-      @router.customRouter.navigate url, trigger: true
+      @router.navigate url
 
 
   CustomRouter = Backbone.Router.extend
 
-    initialize: (options) ->
-      @spine_router = options.spine_router
+    initialize: ->
       @listenTo @, 'route', @onRouteChange
 
     routes:
       '*notFound': 'handleRoute'
 
-    onRouteChange: () ->
+    onRouteChange: (name, route)->
+
       # Not sure the best way to get the url
-      url = location.pathname #???
+      # This needs to be reworked.
+      url = location.pathname
+      if route and route[0]
+        url = route[0]
 
-      # Not sure if we should do that or the spine router
-      @navigate url, trigger: true
-
-      @spine_router.onRouteChange(url)
+      # Not sure if we should do that or the brace router
+      #@navigate url, trigger: true
+      console.log 'triggering route-changed %s', url
+      @trigger 'route-changed', url
 
     handleRoute: ->
       # noop
@@ -120,17 +131,19 @@ define [
       @dispatcher.handleControllerRender @, view
 
 
+  # TODO: Refactor this and the CustomRouter into one class. Remove
+  # constructor. 
   class Router
 
-    constructor: (routes, defaultLayout) ->
+    constructor: (routes, options) ->
+      @options = _.extend({}, pushState: true, options)
       _.extend @, Backbone.Events
       @pendingFlash = null
       @routes = routes
       @routeMap = {}
 
-    handleRoute: (a,b,c,d) ->
-
     onRouteChange: (route) ->
+      console.log 'Router:onRouteChange = %', route
       info = @loadRouteInfo(route)
       @trigger 'route-change', info
 
@@ -145,14 +158,17 @@ define [
       controller: name, action: parts[1]
 
     start: ->
-      @customRouter = new CustomRouter(spine_router: @)
+      @customRouter = new CustomRouter()
+      @customRouter.on 'route-changed', _.bind @onRouteChange, @
       @routes(_.bind @match, @)
-      Backbone.history.start(pushState: true)
+      Backbone.history.start(@options)
 
     match: (route, path) ->
       info = @createResource(path)
       @routeMap[route] = info
-      #console.log 'mapping "%s" to => %s#%s', route, info.controller, info.action
+
+    navigate: (url) ->
+      @customRouter.navigate url, trigger: true
 
 
   class View extends Backbone.View
@@ -233,7 +249,7 @@ define [
       @layout.options.navigator.navigate(url, options)
 
     render: ->
-
+      @unbindUI()
       @preRender()
       throw new Error 'TEMPLATE MUST BE DEFINED IN VIEW' unless @template
 
@@ -249,18 +265,19 @@ define [
       @
 
     unbindUI: ->
-      console.log 'unbindUI!!'
+      return unless @originalUI
       @ui = @originalUI
+      @originalUI = undefined
 
-    # UI SEEMS TO BE BROKEN!!!
     bindUI: ->
-      @ui = @originalUI if @originalUI?
+      return unless @ui
       @originalUI = @ui
+      @ui = {}
       self = @
-      _.each @ui, (selector, key) ->
-        console.log 'SETTING KEY=%s => %s', key, selector
+      _.each @originalUI, (selector, key) ->
         self.ui[key] = self.$el.find(selector)
 
+    # Refactor to mixins
     destroyAfter: (ms) ->
       self = @
       window.setTimeout ->
@@ -308,7 +325,7 @@ define [
 
     createUniqueID: (layout) ->
       # For now return a random number
-      Math.random() * 9999999999
+      Math.random() * 99999
 
     # Refactor this out we can can create a view from a raw html fragment
     makeContentView: (html) ->
@@ -318,17 +335,17 @@ define [
           @$el
       new ContentView()
 
-    shouldRenderLayout: (currentLayout, newLayout) ->
+    shouldRenderLayout: (currentLayout, LayoutType) ->
 
       # If no layout is currently set we should render
       return true unless currentLayout
 
       # If the new layout doesn't have a hash code we know we haven't processed
       # it yet so we should render it because we know it is different.
-      if !newLayout.prototype.__hashCode?
+      if !LayoutType.prototype.__hashCode?
         return true
 
-      return @currentLayout.__hashCode != newLayout.prototype.__hashCode
+      return currentLayout.__hashCode != LayoutType.prototype.__hashCode
 
   class Layout extends View
 
@@ -345,10 +362,10 @@ define [
       @preRender()
       element = $(@container)
 
-      throw new Error "Layout cannot find the selector '#{@container}'" if element.length == 0
-      throw new Error "Layout must have template!" unless @template
-      throw new Error "Layout must have at least a 'content' region!" unless @regions.content
-      throw new Error "Navigator must be set on layout" unless @options.navigator
+      Contract.notEmpty element, 'Layout cannot find the selector'
+      Contract.present @template, 'Layout must have template'
+      Contract.present @regions.content, 'Layout must have aat least a "content" region'
+      Contract.present @options.navigator, 'Navigator must be set on the layout'
 
       @renderTemplate()
       @renderRegions()
@@ -409,7 +426,6 @@ define [
       @executeAction info
 
     handle404: ->
-      console.log '404: Route not found!!'
       throw new Error '404 ERROR IN DISPATCHER!'
 
     getControllerPath: (controller_name) ->
@@ -475,6 +491,8 @@ define [
 
     # Must be overwritten by base class
     routes: null
+
+    # We probably dont need a default layout here.
     defaultLayout: null
 
     start: ->
@@ -492,12 +510,17 @@ define [
 
 
 
-  # Expose the objects
-  Brace =
-    Application: Application
-    Controller: Controller
-    Util: Util
-    View: View
-    Model: Model
-    Layout: Layout
-    Router: Router
+  # Expose the objects. Will refactor this later
+  Brace.Contract = Contract
+  Brace.Application = Application
+  Brace.Controller = Controller
+  Brace.Util = Util
+  Brace.View = View
+  Brace.Model = Model
+  Brace.Layout = Layout
+  Brace.Navigator = Navigator
+  Brace.LayoutManager = LayoutManager
+  Brace.Router = Router
+  Brace.CustomRouter = CustomRouter
+
+  Brace
