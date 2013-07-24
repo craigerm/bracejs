@@ -9,6 +9,7 @@ define [
   Brace = {}
 
 # @include ../util.coffee
+# @include ../contract.coffee
 # @include ../event-hooks.coffee
 # @include ../model.coffee
 # @include ../navigator.coffee
