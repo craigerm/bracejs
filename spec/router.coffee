@@ -17,7 +17,6 @@ define ['brace','backbone'], (Brace, Backbone) ->
 
     describe '#createResource', ->
       it 'returns info about simple route', ->
-        router = new Brace.Router()
         info = router.createResource('users#index')
         expect(info.controller).toBe('users_controller')
         expect(info.action).toBe('index')
