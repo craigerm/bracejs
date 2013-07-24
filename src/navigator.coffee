@@ -1,13 +1,11 @@
   class Navigator
 
     constructor: (router) ->
-      throw new Error 'router must be passed into navigator' unless router
+      Contract.present router, 'router must be passed into navigator'
       @router = router
       _.extend(@, Backbone.Events)
 
     navigate: (url, options) ->
-      #if options.flash
-      #  @trigger 'flash', options
       @router.pendingFlash = options.flash if options
-      @router.customRouter.navigate url, trigger: true
+      @router.navigate url
 
