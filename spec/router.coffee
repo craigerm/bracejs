@@ -5,18 +5,22 @@ define ['brace','backbone'], (Brace, Backbone) ->
     router = null
 
     beforeEach ->
+      Backbone.history.stop()
       routes = ->
       router = new Brace.Router(routes)
 
     describe '#constructor', ->
       it 'has Backbone.Events', ->
         expect(router.trigger).not.toBe(null)
+      it 'builds options with default values', ->
+        expect(router.options.pushState).toBe(true)
 
     describe '#start', ->
       it 'starts backbone router', ->
-        expect(Backbone.history._hasPushState).toBeFalsy()
+        Backbone.history.stop()
+        expect(Backbone.History.started).toBeFalsy()
         router.start()
-        expect(Backbone.history._hasPushState).toBeTruthy()
+        expect(Backbone.History.started).toBeTruthy()
 
     describe '#createResource', ->
       it 'returns info about simple route', ->
