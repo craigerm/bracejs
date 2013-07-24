@@ -21,7 +21,7 @@
       controller: name, action: parts[1]
 
     start: ->
-      @customRouter = new CustomRouter(spine_router: @)
+      @customRouter = new CustomRouter(brace_router: @)
       @routes(_.bind @match, @)
       Backbone.history.start(pushState: true)
 

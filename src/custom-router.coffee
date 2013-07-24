@@ -1,7 +1,7 @@
   CustomRouter = Backbone.Router.extend
 
     initialize: (options) ->
-      @spine_router = options.spine_router
+      @brace_router = options.brace_router
       @listenTo @, 'route', @onRouteChange
 
     routes:
@@ -14,7 +14,7 @@
       # Not sure if we should do that or the spine router
       @navigate url, trigger: true
 
-      @spine_router.onRouteChange(url)
+      @brace_router.onRouteChange(url)
 
     handleRoute: ->
       # noop

@@ -5,7 +5,8 @@ define ['brace','backbone'], (Brace, Backbone) ->
     router = null
 
     beforeEach ->
-      router = new Brace.Router()
+      routes = ->
+      router = new Brace.Router(routes)
 
     describe '#constructor', ->
       it 'has Backbone.Events', ->
@@ -13,7 +14,9 @@ define ['brace','backbone'], (Brace, Backbone) ->
 
     describe '#start', ->
       it 'starts backbone router', ->
-        expect(Backbone.history.start()).toBeFalsy()
+        expect(Backbone.history._hasPushState).toBeFalsy()
+        router.start()
+        expect(Backbone.history._hasPushState).toBeTruthy()
 
     describe '#createResource', ->
       it 'returns info about simple route', ->

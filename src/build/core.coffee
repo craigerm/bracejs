@@ -27,4 +27,7 @@ define [
     View: View
     Model: Model
     Layout: Layout
+    LayoutManager: LayoutManager
     Router: Router
+    CustomRouter: CustomRouter
+

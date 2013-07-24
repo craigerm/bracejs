@@ -15,7 +15,6 @@
       @executeAction info
 
     handle404: ->
-      console.log '404: Route not found!!'
       throw new Error '404 ERROR IN DISPATCHER!'
 
     getControllerPath: (controller_name) ->

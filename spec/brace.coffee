@@ -22,3 +22,7 @@ define ['brace', 'underscore'], (Brace, _) ->
 
     it 'has Router', ->
       expect(_.isObject(Brace.Router)).toBeTruthy()
+
+    it 'has CustomRouter', ->
+      expect(_.isObject(Brace.CustomRouter)).toBeTruthy()
+
