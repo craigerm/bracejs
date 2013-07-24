@@ -55,6 +55,39 @@ module.exports = (grunt) ->
     jasmine:
       sources:
         src: ['src/brace.js']
+      coverage:
+        src: ['src/brace.js']
+        options:
+          helpers: 'spec/helpers/**/*.js'
+          keepRunner: true
+          specs: 'tmp/spec/**/*.js'
+          template: require('grunt-template-jasmine-istanbul')
+          templateOptions:
+            coverage: 'reports/coverage.json'
+            report: 'reports/coverage'
+            template: require('grunt-template-jasmine-requirejs')
+            templateOptions:
+              requireConfig:
+                baseUrl: 'tmp'
+                paths:
+                  jquery: '../vendor/javascripts/jquery'
+                  underscore: '../vendor/javascripts/underscore'
+                  backbone: '../vendor/javascripts/backbone'
+                  brace: 'src/brace'
+                shim:
+                  jquery:
+                    exports: '$'
+                    init: () ->
+                      @$.noConflict()
+                  underscore:
+                    exports: '_'
+                    init: () ->
+                      @_.noConflict()
+                  backbone:
+                    exports: 'Backbone'
+                    deps: ['underscore', 'jquery']
+                    init: () ->
+                      @Backbone.noConflict()
       options:
         helpers: 'spec/helpers/**/*.js'
         keepRunner: true
