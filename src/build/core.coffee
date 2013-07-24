@@ -6,6 +6,8 @@ define [
 
   noop = ->
 
+  Brace = {}
+
 # @include ../util.coffee
 # @include ../event-hooks.coffee
 # @include ../model.coffee
@@ -19,15 +21,15 @@ define [
 # @include ../dispatcher.coffee
 # @include ../application.coffee
 
-  # Expose the objects
-  Brace =
-    Application: Application
-    Controller: Controller
-    Util: Util
-    View: View
-    Model: Model
-    Layout: Layout
-    LayoutManager: LayoutManager
-    Router: Router
-    CustomRouter: CustomRouter
+  # Expose the objects. Will refactor this later
+  Brace.Application = Application
+  Brace.Controller = Controller
+  Brace.Util = Util
+  Brace.View = View
+  Brace.Model = Model
+  Brace.Layout = Layout
+  Brace.LayoutManager = LayoutManager
+  Brace.Router = Router
+  Brace.CustomRouter = CustomRouter
 
+  Brace
