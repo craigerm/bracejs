@@ -76,7 +76,7 @@
       @layout.options.navigator.navigate(url, options)
 
     render: ->
-
+      @unbindUI()
       @preRender()
       throw new Error 'TEMPLATE MUST BE DEFINED IN VIEW' unless @template
 
@@ -92,18 +92,19 @@
       @
 
     unbindUI: ->
-      console.log 'unbindUI!!'
+      return unless @originalUI
       @ui = @originalUI
+      @originalUI = undefined
 
-    # UI SEEMS TO BE BROKEN!!!
     bindUI: ->
-      @ui = @originalUI if @originalUI?
+      return unless @ui
       @originalUI = @ui
+      @ui = {}
       self = @
-      _.each @ui, (selector, key) ->
-        console.log 'SETTING KEY=%s => %s', key, selector
+      _.each @originalUI, (selector, key) ->
         self.ui[key] = self.$el.find(selector)
 
+    # Refactor to mixins
     destroyAfter: (ms) ->
       self = @
       window.setTimeout ->
