@@ -2,6 +2,8 @@
 
     # Must be overwritten by base class
     routes: null
+
+    # We probably dont need a default layout here.
     defaultLayout: null
 
     start: ->
