@@ -32,6 +32,3 @@ define ['brace', 'backbone', 'underscore'], (Brace, Backbone, _) ->
     it 'has Router', ->
       expect(_.isObject(Brace.Router)).toBeTruthy()
 
-    it 'has CustomRouter', ->
-      expect(_.isObject(Brace.CustomRouter)).toBeTruthy()
-

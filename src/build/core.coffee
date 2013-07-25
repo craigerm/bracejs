@@ -13,7 +13,6 @@ define [
 # @include ../event-hooks.coffee
 # @include ../model.coffee
 # @include ../navigator.coffee
-# @include ../custom-router.coffee
 # @include ../controller.coffee
 # @include ../router.coffee
 # @include ../view.coffee
@@ -34,6 +33,5 @@ define [
   Brace.Navigator = Navigator
   Brace.LayoutManager = LayoutManager
   Brace.Router = Router
-  Brace.CustomRouter = CustomRouter
 
   Brace
