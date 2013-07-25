@@ -13,7 +13,7 @@
       @preRender()
       element = $(@container)
 
-      Contract.notEmpty element, 'Layout cannot find the selector'
+      Contract.notEmpty element, "Layout cannot find an element that matches the selector '#{@container}'"
       Contract.present @template, 'Layout must have template'
       Contract.present @regions.content, 'Layout must have aat least a "content" region'
       Contract.present @options.navigator, 'Navigator must be set on the layout'
