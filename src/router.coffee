@@ -11,11 +11,6 @@
       @routes = routes
       @routeMap = {}
 
-    onRouteChange: (route) ->
-      console.log 'Router:onRouteChange = %', route
-      info = @loadRouteInfo(route)
-      @trigger 'route-change', info
-
     loadRouteInfo: (route) ->
       route = route.substr(1) if route[0] == '/'
       route = route.substr(0,route.length - 1) if route[route.length - 1] == '/'
@@ -36,10 +31,28 @@
       namespace: namespace
 
     start: ->
-      @customRouter = new CustomRouter()
-      @customRouter.on 'route-changed', _.bind @onRouteChange, @
+      # Refactor all this nonsense
+      self = @
+
+      # A stub class
+      RouterClass = Backbone.Router.extend
+        routes: {}
+
+      count = 1
       @routes(_.bind @match, @)
+      _.each @routeMap, (value, key) ->
+        routeHandler = 'routeHandler' + count
+        RouterClass.prototype.routes[key] = routeHandler
+        RouterClass.prototype[routeHandler] = ->
+          self.handleRoute(value, arguments)
+        count++
+
+      @backboneRouter = new RouterClass()
       Backbone.history.start(@options)
+
+    handleRoute: (info) ->
+      args = Array.prototype.slice.call(arguments, 1)
+      @trigger 'route-change', info, args[0]
 
     match: (route, path) ->
       info = @createResource(path)

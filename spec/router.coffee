@@ -6,7 +6,10 @@ define ['brace','backbone'], (Brace, Backbone) ->
 
     beforeEach ->
       Backbone.history.stop()
-      routes = ->
+
+      routes = (match) ->
+        match 'employee/:id', 'employess#show'
+
       router = new Brace.Router(routes)
 
     describe '#constructor', ->
