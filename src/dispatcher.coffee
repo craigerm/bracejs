@@ -10,17 +10,17 @@
       @router.on 'route-change', _.bind @handleControllerAction, @
       @router.start()
 
-    handleControllerAction: (info) ->
+    handleControllerAction: (info, params) ->
       return @handle404() unless info
-      @executeAction info
+      @executeAction info, params
 
     handle404: ->
       throw new Error '404 ERROR IN DISPATCHER!'
 
     getControllerPath: (info) ->
-      "#{info.namespace}/#{info.controller_name}"
+      "#{info.namespace}/#{info.controller}"
 
-    executeAction: (info) ->
+    executeAction: (info, params) ->
 
       dispatcher = @
       controller_path = @getControllerPath(info)
@@ -36,11 +36,11 @@
         promise = dispatcher.handleBeforeFilters(controller, info.action)
 
         # After we handled the before filters execute the controller's action
-        promise.done -> dispatcher.renderAction(controller, action)
+        promise.done -> dispatcher.renderAction(controller, action, params)
 
     # Render action after all before filters have been executed
-    renderAction: (controller, action) ->
-      action.call controller
+    renderAction: (controller, action, params) ->
+      action.apply controller, params
 
     getLayout: (controller) ->
       # Later we will check the controller for a layout
@@ -60,9 +60,10 @@
     #  deferred.resolve() or deferred.fail() in a callback
     #  return deferred.promise()
     handleBeforeFilters: (controller, action) ->
-      # Ok, the filters are a little weird. WE might want to make any AJAX calls
+      # Ok, the filters are a little weird. We might want to make any AJAX calls
       # before we render the view so each filter can return a promise and either call
-      # fail or resolve. If you call fail we won't render the view
+      # fail or resolve. If you call fail we won't render the view.
+
       # Get the actions that should be applied for this action
       filters = @getBeforeFiltersForAction(controller.beforeFilters, action)
 
