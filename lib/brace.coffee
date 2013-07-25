@@ -75,31 +75,6 @@ define [
       @router.navigate url
 
 
-  CustomRouter = Backbone.Router.extend
-
-    initialize: ->
-      @listenTo @, 'route', @onRouteChange
-
-    routes:
-      '*notFound': 'handleRoute'
-
-    onRouteChange: (name, route)->
-
-      # Not sure the best way to get the url
-      # This needs to be reworked.
-      url = location.pathname
-      if route and route[0]
-        url = route[0]
-
-      # Not sure if we should do that or the brace router
-      #@navigate url, trigger: true
-      console.log 'triggering route-changed %s', url
-      @trigger 'route-changed', url
-
-    handleRoute: ->
-      # noop
-
-
   class Controller
 
     preInitialize: noop
@@ -144,11 +119,6 @@ define [
       @routes = routes
       @routeMap = {}
 
-    onRouteChange: (route) ->
-      console.log 'Router:onRouteChange = %', route
-      info = @loadRouteInfo(route)
-      @trigger 'route-change', info
-
     loadRouteInfo: (route) ->
       route = route.substr(1) if route[0] == '/'
       route = route.substr(0,route.length - 1) if route[route.length - 1] == '/'
@@ -169,10 +139,28 @@ define [
       namespace: namespace
 
     start: ->
-      @customRouter = new CustomRouter()
-      @customRouter.on 'route-changed', _.bind @onRouteChange, @
+      # Refactor all this nonsense
+      self = @
+
+      # A stub class
+      RouterClass = Backbone.Router.extend
+        routes: {}
+
+      count = 1
       @routes(_.bind @match, @)
+      _.each @routeMap, (value, key) ->
+        routeHandler = 'routeHandler' + count
+        RouterClass.prototype.routes[key] = routeHandler
+        RouterClass.prototype[routeHandler] = ->
+          self.handleRoute(value, arguments)
+        count++
+
+      @backboneRouter = new RouterClass()
       Backbone.history.start(@options)
+
+    handleRoute: (info) ->
+      args = Array.prototype.slice.call(arguments, 1)
+      @trigger 'route-change', info, args[0]
 
     match: (route, path) ->
       info = @createResource(path)
@@ -373,7 +361,7 @@ define [
       @preRender()
       element = $(@container)
 
-      Contract.notEmpty element, 'Layout cannot find the selector'
+      Contract.notEmpty element, "Layout cannot find an element that matches the selector '#{@container}'"
       Contract.present @template, 'Layout must have template'
       Contract.present @regions.content, 'Layout must have aat least a "content" region'
       Contract.present @options.navigator, 'Navigator must be set on the layout'
@@ -432,17 +420,17 @@ define [
       @router.on 'route-change', _.bind @handleControllerAction, @
       @router.start()
 
-    handleControllerAction: (info) ->
+    handleControllerAction: (info, params) ->
       return @handle404() unless info
-      @executeAction info
+      @executeAction info, params
 
     handle404: ->
       throw new Error '404 ERROR IN DISPATCHER!'
 
     getControllerPath: (info) ->
-      "#{info.namespace}/#{info.controller_name}"
+      "#{info.namespace}/#{info.controller}"
 
-    executeAction: (info) ->
+    executeAction: (info, params) ->
 
       dispatcher = @
       controller_path = @getControllerPath(info)
@@ -458,11 +446,11 @@ define [
         promise = dispatcher.handleBeforeFilters(controller, info.action)
 
         # After we handled the before filters execute the controller's action
-        promise.done -> dispatcher.renderAction(controller, action)
+        promise.done -> dispatcher.renderAction(controller, action, params)
 
     # Render action after all before filters have been executed
-    renderAction: (controller, action) ->
-      action.call controller
+    renderAction: (controller, action, params) ->
+      action.apply controller, params
 
     getLayout: (controller) ->
       # Later we will check the controller for a layout
@@ -482,9 +470,10 @@ define [
     #  deferred.resolve() or deferred.fail() in a callback
     #  return deferred.promise()
     handleBeforeFilters: (controller, action) ->
-      # Ok, the filters are a little weird. WE might want to make any AJAX calls
+      # Ok, the filters are a little weird. We might want to make any AJAX calls
       # before we render the view so each filter can return a promise and either call
-      # fail or resolve. If you call fail we won't render the view
+      # fail or resolve. If you call fail we won't render the view.
+
       # Get the actions that should be applied for this action
       filters = @getBeforeFiltersForAction(controller.beforeFilters, action)
 
@@ -530,6 +519,5 @@ define [
   Brace.Navigator = Navigator
   Brace.LayoutManager = LayoutManager
   Brace.Router = Router
-  Brace.CustomRouter = CustomRouter
 
   Brace
