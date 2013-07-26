@@ -101,6 +101,12 @@ define [
     navigate: (url, options) ->
       @dispatcher.navigator.navigate(url, options)
 
+    # A helper for fetching models and rendering on success
+    fetchAndRender: (model, ViewClass) ->
+      self = @
+      # Should we return a promise so we can handle the error?
+      model.fetch().success -> self.render new ViewClass(model: model)
+
     # Actions should call this to render
     render: (view) ->
       @dispatcher.handleControllerRender @, view
@@ -167,7 +173,7 @@ define [
       @routeMap[route] = info
 
     navigate: (url) ->
-      @customRouter.navigate url, trigger: true
+      @backboneRouter.navigate url, trigger: true
 
 
   class View extends Backbone.View
