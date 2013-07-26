@@ -88,15 +88,18 @@ module.exports = (grunt) ->
         options:
           port: 8000
 
+    clean: ['tmp/**/*']
+
   grunt.loadNpmTasks 'grunt-preprocess'
   grunt.loadNpmTasks 'grunt-contrib-concat'
   grunt.loadNpmTasks 'grunt-contrib-jasmine'
   grunt.loadNpmTasks 'grunt-contrib-watch'
   grunt.loadNpmTasks 'grunt-contrib-connect'
   grunt.loadNpmTasks 'grunt-contrib-coffee'
+  grunt.loadNpmTasks 'grunt-contrib-clean'
   grunt.loadNpmTasks 'grunt-notify'
 
   grunt.registerTask 'build', ['preprocess', 'concat']
-  grunt.registerTask 'test', ['build','coffee', 'jasmine:sources']
+  grunt.registerTask 'test', ['clean', 'build', 'coffee', 'jasmine:sources']
   grunt.registerTask 'default', ['preprocess', 'concat']
 
