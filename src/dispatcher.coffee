@@ -68,7 +68,7 @@
       filters = @getBeforeFiltersForAction(controller.beforeFilters, action)
 
       # Execute the action as keep the promises
-      promises = _.map filters, (filter) -> filter.call(controller)
+      promises = _.map filters, (filter) -> filter.call(controller, $.Deferred())
 
       # Return the promise and have the called handle fail() and done()
       return $.when.apply($, promises)
