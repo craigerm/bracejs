@@ -13,6 +13,9 @@
       "url": "https://github.com/craigerm/bracejs/blob/master/MIT-LICENSE"
     }
   ],
+  "scripts": {
+    "test": "grunt test"
+  },
   "author": {
     "name": "Craig MacGregor",
     "email": "craigerm@gmail.com",
