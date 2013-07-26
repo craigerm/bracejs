@@ -3,8 +3,8 @@
     preInitialize: noop
     postInitialize: noop
 
-    constructor: (dispatcher, navigator) ->
-      throw new Error 'dispatcher is null!! in controller!' unless dispatcher?
+    constructor: (dispatcher) ->
+      Contract.present dispatcher, 'Controller: dispatcher must be passed into constructor'
       @dispatcher = dispatcher
       @beforeFilters = []
       @initialize()
