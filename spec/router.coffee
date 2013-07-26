@@ -41,6 +41,12 @@ define ['brace','backbone'], (Brace, Backbone) ->
         expect(info.action).toBe('index')
         expect(info.namespace).toBe('users')
 
+      it 'supports namespace with more than 1 level deep', ->
+        info = router.createResource('app/employees/main#index')
+        expect(info.controller).toBe('main_controller')
+        expect(info.namespace).toBe('app/employees')
+        expect(info.action).toBe('index')
+
     describe '#match', ->
       it 'adds simple route info to map', ->
         router.match('users/new', 'users#create')

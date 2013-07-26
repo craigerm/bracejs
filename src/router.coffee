@@ -21,9 +21,11 @@
       name = parts[0] + '_controller'
       paths = name.split('/')
       name = _.last(paths)
-      throw new Error 'We only support 1 level of paths for controllers' if paths.length > 2
-      namespace = paths[0] unless paths.length is 1
-      namespace = @defaultControllerNamespace if paths.length is 1
+      namespace = @defaultControllerNamespace
+
+      if paths.length > 1
+        paths.pop()
+        namespace = paths.join('/')
 
       # Return info about this resource
       controller: name
