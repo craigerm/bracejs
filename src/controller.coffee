@@ -18,6 +18,8 @@
 
     # Example:
     #   @beforeFilter @authenticate, except: ['login']
+    # Options:
+    #   except or only
     beforeFilter: (fn, options) ->
       @beforeFilters.push(fn: fn, options: options)
 

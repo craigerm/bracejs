@@ -23,3 +23,14 @@ define ['brace'], (Brace) ->
         expect(controller.preInitialize).toHaveBeenCalled()
         expect(controller.postInitialize).toHaveBeenCalled()
 
+    describe '#beforeFilters', ->
+      it 'adding filters add to list', ->
+        noop = ->
+        controller = new Controller(dispatch)
+        controller.beforeFilter noop
+        controller.beforeFilter noop
+
+        expect(controller.beforeFilters.length).toBe(2)
+        expect(controller.beforeFilters[0].fn).toBe(noop)
+        expect(controller.beforeFilters[0].options).toBeUndefined()
+
