@@ -59,5 +59,5 @@
       @routeMap[route] = info
 
     navigate: (url) ->
-      @customRouter.navigate url, trigger: true
+      @backboneRouter.navigate url, trigger: true
 
