@@ -451,8 +451,14 @@ define [
         # Handle before filters here
         promise = dispatcher.handleBeforeFilters(controller, info.action)
 
+        promise.fail ->
+          console.log 'PROMISE FAILED'
+
         # After we handled the before filters execute the controller's action
-        promise.done -> dispatcher.renderAction(controller, action, params)
+        promise.done ->
+          console.log 'FINISHED PROMISE'
+          dispatcher.renderAction(controller, action, params)
+
 
     # Render action after all before filters have been executed
     renderAction: (controller, action, params) ->
@@ -484,7 +490,7 @@ define [
       filters = @getBeforeFiltersForAction(controller.beforeFilters, action)
 
       # Execute the action as keep the promises
-      promises = _.map filters, (filter) -> filter.call(controller)
+      promises = _.map filters, (filter) -> filter.call(controller, $.Deferred())
 
       # Return the promise and have the called handle fail() and done()
       return $.when.apply($, promises)
