@@ -80,8 +80,8 @@ define [
     preInitialize: noop
     postInitialize: noop
 
-    constructor: (dispatcher, navigator) ->
-      throw new Error 'dispatcher is null!! in controller!' unless dispatcher?
+    constructor: (dispatcher) ->
+      Contract.present dispatcher, 'Controller: dispatcher must be passed into constructor'
       @dispatcher = dispatcher
       @beforeFilters = []
       @initialize()
@@ -451,14 +451,8 @@ define [
         # Handle before filters here
         promise = dispatcher.handleBeforeFilters(controller, info.action)
 
-        promise.fail ->
-          console.log 'PROMISE FAILED'
-
         # After we handled the before filters execute the controller's action
-        promise.done ->
-          console.log 'FINISHED PROMISE'
-          dispatcher.renderAction(controller, action, params)
-
+        promise.done -> dispatcher.renderAction(controller, action, params)
 
     # Render action after all before filters have been executed
     renderAction: (controller, action, params) ->
