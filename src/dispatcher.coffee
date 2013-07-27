@@ -1,6 +1,7 @@
   class Dispatcher
 
     constructor: (routes, defaultLayout) ->
+      _.extend @, Backbone.Events
       @router = new Router(routes)
       @navigator = new Navigator(@router)
       @defaultLayout = defaultLayout
@@ -12,6 +13,7 @@
 
     handleControllerAction: (info, params) ->
       return @handle404() unless info
+      @trigger 'changed-action', info, params
       @executeAction info, params
 
     handle404: ->
