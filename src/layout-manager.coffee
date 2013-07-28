@@ -25,7 +25,7 @@
 
       # Display any pending flashes after we transition views
       flash = @navigator.router.pendingFlash
-      @currentLayout.setFlash(flash) if flash
+      @currentLayout.setFlash(flash.message, type: flash.type) if flash
       @navigator.router.pendingFlash = null
 
     renderLayout: (LayoutClass) ->

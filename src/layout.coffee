@@ -50,8 +50,8 @@
       region = $(@regions.flash)
       throw new Error 'no flash region found!' if region.length == 0
       throw new Error 'no flash view found in subclass' unless @flashView
-      model = message: message
-      region.html new @flashView(model: model).render().el
+      flashModel = message: message, type: options.type
+      region.html new @flashView(model: flashModel).render().el
 
     destroy: ->
       @cleanupRegions()
