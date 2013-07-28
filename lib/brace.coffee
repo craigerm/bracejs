@@ -66,12 +66,16 @@ define [
   class Navigator
 
     constructor: (router) ->
-      Contract.present router, 'router must be passed into navigator'
+      Contract.present router, 'router must be passed into Navigator'
       @router = router
       _.extend(@, Backbone.Events)
 
     navigate: (url, options) ->
-      @router.pendingFlash = options.flash if options
+      if options and options.flash
+        @router.pendingFlash =
+          message: options.flash
+          type: options.type || 'info'
+
       @router.navigate url
 
 
@@ -321,7 +325,7 @@ define [
 
       # Display any pending flashes after we transition views
       flash = @navigator.router.pendingFlash
-      @currentLayout.setFlash(flash) if flash
+      @currentLayout.setFlash(flash.message, type: flash.type) if flash
       @navigator.router.pendingFlash = null
 
     renderLayout: (LayoutClass) ->
@@ -408,8 +412,8 @@ define [
       region = $(@regions.flash)
       throw new Error 'no flash region found!' if region.length == 0
       throw new Error 'no flash view found in subclass' unless @flashView
-      model = message: message
-      region.html new @flashView(model: model).render().el
+      flashModel = message: message, type: options.type
+      region.html new @flashView(model: flashModel).render().el
 
     destroy: ->
       @cleanupRegions()
