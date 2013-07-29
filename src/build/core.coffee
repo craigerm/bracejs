@@ -1,7 +1,8 @@
 define [
   'underscore',
   'backbone',
-], (_, Backbone) ->
+  'handlebars'
+], (_, Backbone, Handlebars) ->
 
   Brace = {}
   noop = ->
@@ -11,6 +12,7 @@ define [
 # @include ../util.coffee
 # @include ../contract.coffee
 # @include ../event-hooks.coffee
+# @include ../handlebars-helpers.coffee
 # @include ../model.coffee
 # @include ../navigator.coffee
 # @include ../controller.coffee
