@@ -9,7 +9,8 @@
 define [
   'underscore',
   'backbone',
-], (_, Backbone) ->
+  'handlebars'
+], (_, Backbone, Handlebars) ->
 
   Brace = {}
   noop = ->
@@ -62,6 +63,9 @@ define [
         event.preventDefault()
         url = href.replace(/^\//,'').replace('\#\!\/','')
         router.navigate url, trigger: true
+
+  Handlebars.registerHelper 'json', (obj) ->
+    JSON.stringify(obj)
 
   class Model extends Backbone.Model
 
