@@ -516,8 +516,8 @@ define [
 
     start: ->
 
-      Util.ensure @, 'routes', 'Application'
-      Util.ensure @, 'defaultLayout', 'Application'
+      Contract.present @routes, 'Application:routes must be set'
+      Contract.present @defaultLayout, 'Application:defaultLayout must be set'
 
       @dispatcher = new Dispatcher(@routes, @defaultLayout)
 
