@@ -67,12 +67,15 @@ module.exports = (grunt) ->
               jquery: '../vendor/javascripts/jquery'
               underscore: '../vendor/javascripts/underscore'
               backbone: '../vendor/javascripts/backbone'
+              handlebars: '../vendor/javascripts/handlebars'
               brace: 'src/brace'
             shim:
               jquery:
                 exports: '$'
                 init: () ->
                   @$.noConflict()
+              handlebars:
+                exports: 'Handlebars'
               underscore:
                 exports: '_'
                 init: () ->
