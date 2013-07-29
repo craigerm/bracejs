@@ -216,6 +216,11 @@ define [
       @renderViewInRegion(region, view) if @isRendered
       @pendingRegionsToRender.push(region: region, view: view) unless @isRendered
 
+    # Append the view
+    appendView: (view) ->
+      @$el.append(view.render().el)
+      @
+
     renderViewInRegion: (regionName, view) ->
       selector = @regions[regionName]
       region = @$el.find(selector)
