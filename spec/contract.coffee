@@ -4,6 +4,17 @@ define ['brace'], (Brace) ->
 
   describe 'Contract', ->
 
+    describe 'generic error', ->
+      it 'has ContractError name', ->
+        error = null
+        try
+          Contract.present(null, 'test')
+        catch e
+          error = e
+
+        expect(e).not.toBeNull()
+        expect(e.name).toBe('ContractError')
+
     describe '#notEmpty', ->
 
       it 'does nothing if array has values', ->
@@ -25,4 +36,9 @@ define ['brace'], (Brace) ->
 
       it 'throws error if object is undefined', ->
         expect(-> Contract.present(undefined, 'zap')).toThrow(new Error('zap'))
+
+    describe '#fail', ->
+      it 'always throws exception', ->
+        block = -> Contract.fail 'oh no!'
+        expect(block).toThrow(new Error('oh no!'))
 
