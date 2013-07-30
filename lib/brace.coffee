@@ -57,8 +57,7 @@ define [
 
       # Handle any links to backbone navigator
       $(document).on 'click', 'a[href^="/"]', (event) ->
-        return if event.ctrlKey
-        return if event.shiftKey
+        return if event.ctrlKey || event.shiftKey || event.metaKey
         href = $(event.currentTarget).attr('href')
         event.preventDefault()
         url = href.replace(/^\//,'').replace('\#\!\/','')
