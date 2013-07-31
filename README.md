@@ -35,4 +35,4 @@ Not sure if this will be in core, or available as a plugin.
 MarionetteJS, Chaplin, Rendr, Sinatra, Rails
 
 ## License
-Copyright (c) Craig MacGregor 2012 under [MIT LICENSE](/MIT-LICENSE)
+Copyright (c) Craig MacGregor 2013 under [MIT LICENSE](/MIT-LICENSE)
