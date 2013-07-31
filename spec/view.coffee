@@ -2,7 +2,8 @@ define ['brace', 'underscore'], (Brace, _) ->
 
   # fake views
   class FakeView extends Brace.View
-    template: _.template('<div><span id="name"></div><strong>a</strong><strong>b</strong>')
+    template: _.template('<div><span id="name"></div><input type="text" id="desc" /><strong>a</strong><strong>b</strong>')
+    onEnterKey: ->
     ui:
       name: '#name'
       strongs: 'strong'
@@ -40,4 +41,14 @@ define ['brace', 'underscore'], (Brace, _) ->
         expect(view.ui.name.length).toBe(1)
         expect(view.ui.strongs.length).toBe(2)
 
+    describe '@render', ->
 
+      # TODO: Use simulate plugin
+      it 'maps onEnterKey handler if it is defined', ->
+        spyOn(FakeView.prototype, 'onEnterKey').andCallThrough()
+        view = new FakeView()
+        view.render()
+        event = $.Event('keypress')
+        event.which = 13
+        view.$el.find('input:first').trigger(event)
+        expect(view.onEnterKey).toHaveBeenCalled()

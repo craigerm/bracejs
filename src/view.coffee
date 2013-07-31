@@ -80,6 +80,13 @@
     navigate: (url, options) ->
       @layout.options.navigator.navigate(url, options)
 
+    bindExtraEvents: ->
+      self = @
+      # Hack for now just to get behaviour working
+      if @onEnterKey
+        @$el.find(':input').on 'keypress', (e) ->
+          self.onEnterKey(e) if e.which is 13
+
     render: ->
       @unbindUI()
       @preRender()
@@ -92,6 +99,7 @@
       @addDefaultViewEvents()
       @renderPendingRegions()
       @bindUI()
+      @bindExtraEvents()
       @isRendered = true
       @postRender()
       @
