@@ -13,6 +13,13 @@ define ['brace', 'underscore'], (Brace, _) ->
     getViewData = (model) ->
       new Brace.View(model: model).getViewData()
 
+    describe '#constructor', ->
+
+      it 'layout is passed via constructor it gets assigned as a property', ->
+        view = new Brace.View(layout: {})
+        expect(view.options.layout).not.toBe(null)
+        expect(view.layout).not.toBe(null)
+
     describe '#getViewData', ->
 
       it 'returns empty object if no model', ->
