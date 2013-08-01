@@ -241,7 +241,6 @@ define [
       @postInitialize()
 
     assignSpecialOptions: ->
-      #return unless @options
       @layout = @options.layout
 
     flash: (message, options) ->
