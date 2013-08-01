@@ -236,8 +236,13 @@ define [
       @pendingRegionsToRender = []
       @isRendered = false
       @listenTo @, 'remove', @unbindUI
+      @assignSpecialOptions()
       @preInitialize()
       @postInitialize()
+
+    assignSpecialOptions: ->
+      #return unless @options
+      @layout = @options.layout
 
     flash: (message, options) ->
       @layout.setFlash(message, options)
