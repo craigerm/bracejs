@@ -25,6 +25,11 @@ define ['brace', 'underscore'], (Brace, _) ->
         expect(view.options.collection).toBeDefined()
         expect(view.collection).toBeDefined()
 
+      it 'assigns model as property if passed via constructor', ->
+        view = new Brace.View(model: {})
+        expect(view.options.model).toBeDefined()
+        expect(view.model).toBeDefined()
+
     describe '#getViewData', ->
 
       it 'returns empty object if no model', ->
