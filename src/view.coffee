@@ -90,7 +90,7 @@
     render: ->
       @unbindUI()
       @preRender()
-      throw new Error 'TEMPLATE MUST BE DEFINED IN VIEW' unless @template
+      Contract.present @template, 'view:render must have template'
 
       html = @template
       @$el.html @template(@getViewData())

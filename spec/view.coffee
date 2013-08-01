@@ -52,3 +52,10 @@ define ['brace', 'underscore'], (Brace, _) ->
         event.which = 13
         view.$el.find('input:first').trigger(event)
         expect(view.onEnterKey).toHaveBeenCalled()
+
+      it 'throws error if no template defined', ->
+        view = new FakeView()
+        view.template = null
+        block = -> view.render()
+        expect(block).toThrow(new Error('view:render must have template'))
+
