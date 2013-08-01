@@ -129,8 +129,6 @@ define [
       @dispatcher.handleControllerRender @, view
 
 
-  # TODO: Refactor this and the CustomRouter into one class. Remove
-  # constructor. 
   class Router
 
     defaultControllerNamespace: 'controllers'
