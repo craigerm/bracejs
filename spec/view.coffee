@@ -17,8 +17,8 @@ define ['brace', 'underscore'], (Brace, _) ->
 
       it 'layout is passed via constructor it gets assigned as a property', ->
         view = new Brace.View(layout: {})
-        expect(view.options.layout).not.toBe(null)
-        expect(view.layout).not.toBe(null)
+        expect(view.options.layout).toBeDefined()
+        expect(view.layout).toBeDefined()
 
     describe '#getViewData', ->
 
