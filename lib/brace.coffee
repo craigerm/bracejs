@@ -501,8 +501,6 @@ define [
       return controller.layout || @defaultLayout
 
     handleControllerRender: (controller, view) ->
-      # We need the router here too
-      #view.navigator = new Navigator(@router)
       @layoutManager.renderContent(view, @getLayout(controller))
 
     getBeforeFiltersForAction: (beforeFilters, action) ->
