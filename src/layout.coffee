@@ -15,7 +15,7 @@
 
       Contract.notEmpty element, "Layout cannot find an element that matches the selector '#{@container}'"
       Contract.present @template, 'Layout must have template'
-      Contract.present @regions.content, 'Layout must have aat least a "content" region'
+      Contract.present @regions.content, 'Layout must have at least a "content" region'
       Contract.present @options.navigator, 'Navigator must be set on the layout'
 
       @renderTemplate()
@@ -50,6 +50,8 @@
       region = $(@regions.flash)
       throw new Error 'no flash region found!' if region.length == 0
       throw new Error 'no flash view found in subclass' unless @flashView
+      defaults = type: 'info'
+      options = $.extend({}, options, defaults)
       flashModel = message: message, type: options.type
       region.html new @flashView(model: flashModel).render().el
 
