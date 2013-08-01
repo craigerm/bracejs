@@ -441,7 +441,7 @@ define [
       throw new Error 'no flash region found!' if region.length == 0
       throw new Error 'no flash view found in subclass' unless @flashView
       defaults = type: 'info'
-      options = $.extend({}, options, defaults)
+      options = $.extend {}, defaults, options
       flashModel = message: message, type: options.type
       region.html new @flashView(model: flashModel).render().el
 
