@@ -39,7 +39,7 @@ module.exports = (grunt) ->
         src: 'spec/*.coffee'
         dest: 'tmp/spec/'
         flatten: true
-        ext: '.js'
+        ext: '.spec.js'
 
     watch:
       specs:
