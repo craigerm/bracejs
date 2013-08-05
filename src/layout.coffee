@@ -38,7 +38,7 @@
 
     renderRegion: (key, view) ->
       selector = @regions[key]
-      Brace.present selector, "Layout region  '#{key}' was not found"
+      Contract.present selector, "Layout region  '#{key}' was not found"
       region = @$el.find(selector)
       region.html view.render().el
 
