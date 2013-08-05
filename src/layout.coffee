@@ -38,7 +38,7 @@
 
     renderRegion: (key, view) ->
       selector = @regions[key]
-      throw new Error "Region '#{key}' was not found!" unless selector
+      Brace.present selector, "Layout region  '#{key}' was not found"
       region = @$el.find(selector)
       region.html view.render().el
 
@@ -48,8 +48,8 @@
 
     setFlash: (message, options) ->
       region = $(@regions.flash)
-      throw new Error 'no flash region found!' if region.length == 0
-      throw new Error 'no flash view found in subclass' unless @flashView
+      Contract.notEmpty region, 'Layout requires a flash region'
+      Contract.present @flashView, 'Layout requires a flash view'
       defaults = type: 'info'
       options = $.extend {}, defaults, options
       flashModel = message: message, type: options.type
