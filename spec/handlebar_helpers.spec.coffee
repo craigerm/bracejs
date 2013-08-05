@@ -17,12 +17,17 @@ define ['brace', 'handlebars'], (Brace, Handlebars) ->
 
     describe '#ifequal', ->
 
+      context = null
+
+      beforeEach ->
+        context = fn: ->
+        spyOn(context, 'fn')
+
       it 'executes block for equal values', ->
-        #result = Handlebars.helpers.ifequal('hello', 'hello')
-        #expect(result).toBe(true)
+        Handlebars.helpers.ifequal('hello', 'hello', context)
+        expect(context.fn).toHaveBeenCalled()
 
       it 'returns false if values are different', ->
-        #Handlebars.helpers.ifequal('hello', 'world')
-        #expect(result).toBe(false)
-
+        Handlebars.helpers.ifequal('hello', 'world', context)
+        expect(context.fn).not.toHaveBeenCalled()
 
