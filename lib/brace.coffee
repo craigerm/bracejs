@@ -333,7 +333,7 @@ define [
   class LayoutManager
 
     constructor: (navigator) ->
-      throw new Error 'navigator must be defined on layout manager' unless navigator
+      Contract.present navigator, 'LayoutManager:constructor requires a navigate object'
       @navigator = navigator
 
     currentLayout: null
@@ -364,7 +364,7 @@ define [
       layout = new LayoutClass(navigator: @navigator)
       el = layout.render().el
       container = $(layout.container)
-      throw new Error "Template container could not be found" unless container.length > 0
+      Contract.notEmpty container, 'LayoutManager:renderLayout requires a template container'
       container.html(el)
       layout
 
