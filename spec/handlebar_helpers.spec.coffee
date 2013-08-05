@@ -20,14 +20,20 @@ define ['brace', 'handlebars'], (Brace, Handlebars) ->
       context = null
 
       beforeEach ->
-        context = fn: ->
+        context =
+          fn: ->
+          inverse: ->
+
         spyOn(context, 'fn')
+        spyOn(context, 'inverse')
 
       it 'executes block for equal values', ->
         Handlebars.helpers.ifequal('hello', 'hello', context)
         expect(context.fn).toHaveBeenCalled()
+        expect(context.inverse).not.toHaveBeenCalled()
 
       it 'returns false if values are different', ->
         Handlebars.helpers.ifequal('hello', 'world', context)
+        expect(context.inverse).toHaveBeenCalled()
         expect(context.fn).not.toHaveBeenCalled()
 
