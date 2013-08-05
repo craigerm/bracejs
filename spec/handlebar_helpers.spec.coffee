@@ -37,3 +37,17 @@ define ['brace', 'handlebars'], (Brace, Handlebars) ->
         expect(context.inverse).toHaveBeenCalled()
         expect(context.fn).not.toHaveBeenCalled()
 
+    describe '#default', ->
+
+      it 'returns default if null', ->
+        result = Handlebars.helpers.default null, '(none)'
+        expect(result).toBe('(none)')
+
+      it 'returns default is empty string', ->
+        result = Handlebars.helpers.default '', '(none)'
+        expect(result).toBe('(none)')
+
+      it 'returns value if it is a value', ->
+        result = Handlebars.helpers.default '500', '(none)'
+        expect(result).toBe('500')
+
