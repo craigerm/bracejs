@@ -32,7 +32,7 @@ define ['brace', 'handlebars'], (Brace, Handlebars) ->
         expect(context.fn).toHaveBeenCalled()
         expect(context.inverse).not.toHaveBeenCalled()
 
-      it 'returns false if values are different', ->
+      it 'executes inverse if values not equal', ->
         Handlebars.helpers.ifequal('hello', 'world', context)
         expect(context.inverse).toHaveBeenCalled()
         expect(context.fn).not.toHaveBeenCalled()
