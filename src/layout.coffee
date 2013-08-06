@@ -43,8 +43,10 @@
       region.html view.render().el
 
     setContent: (view) ->
+      @contentView.remove() if @contentView
       region = $(@regions.content)
       region.html view.render().el
+      @contentView = view
 
     setFlash: (message, options) ->
       region = $(@regions.flash)

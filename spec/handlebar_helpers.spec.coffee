@@ -50,4 +50,3 @@ define ['brace', 'handlebars'], (Brace, Handlebars) ->
       it 'returns value if it is a value', ->
         result = Handlebars.helpers.default '500', '(none)'
         expect(result).toBe('500')
-
