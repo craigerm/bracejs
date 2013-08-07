@@ -50,3 +50,26 @@ define ['brace', 'handlebars'], (Brace, Handlebars) ->
       it 'returns value if it is a value', ->
         result = Handlebars.helpers.default '500', '(none)'
         expect(result).toBe('500')
+
+    describe '#ifempty', ->
+
+      context = null
+
+      beforeEach ->
+        context =
+          fn: ->
+          inverse: ->
+
+        spyOn(context, 'fn')
+        spyOn(context, 'inverse')
+
+      it 'executes block if value is empty', ->
+        Handlebars.helpers.ifempty([], context)
+        expect(context.fn).toHaveBeenCalled()
+        expect(context.inverse).not.toHaveBeenCalled()
+
+      it 'executes inverse if array has a value', ->
+        Handlebars.helpers.ifempty([5,4], context)
+        expect(context.inverse).toHaveBeenCalled()
+        expect(context.fn).not.toHaveBeenCalled()
+
