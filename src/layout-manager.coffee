@@ -20,6 +20,9 @@
       # We need all views to belong to a layout
       view.layout = @currentLayout
 
+      # Clear existing flash if present
+      @currentLayout.clearFlash()
+
       # Render the view in the content area
       @currentLayout.setContent(view)
 

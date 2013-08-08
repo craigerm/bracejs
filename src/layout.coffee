@@ -48,9 +48,20 @@
       region.html view.render().el
       @contentView = view
 
-    setFlash: (message, options) ->
+    hasFlashRegion: ->
+      region = $(@regions.flash)
+      region.length > 0
+
+    getFlashRegion: ->
       region = $(@regions.flash)
       Contract.notEmpty region, 'Layout requires a flash region'
+      region
+
+    clearFlash: ->
+      @getFlashRegion().html '' if @hasFlashRegion()
+
+    setFlash: (message, options) ->
+      region = @getFlashRegion()
       Contract.present @flashView, 'Layout requires a flash view'
       defaults = type: 'info'
       options = $.extend {}, defaults, options
