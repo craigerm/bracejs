@@ -86,6 +86,10 @@ define [
     else
       context.inverse(@)
 
+  Handlebars.registerHelper 'capitalize', (str) ->
+    Util.capitalize(str)
+
+
   class Model extends Backbone.Model
 
   class Navigator

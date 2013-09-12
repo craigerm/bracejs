@@ -14,3 +14,7 @@
       context.fn(@)
     else
       context.inverse(@)
+
+  Handlebars.registerHelper 'capitalize', (str) ->
+    Util.capitalize(str)
+

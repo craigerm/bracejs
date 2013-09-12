@@ -73,3 +73,7 @@ define ['brace', 'handlebars'], (Brace, Handlebars) ->
         expect(context.inverse).toHaveBeenCalled()
         expect(context.fn).not.toHaveBeenCalled()
 
+  describe 'capitalize', ->
+    result = Handlebars.helpers.capitalize('hello')
+    expect(result).toBe('Hello')
+
