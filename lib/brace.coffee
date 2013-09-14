@@ -72,6 +72,9 @@ define [
   Handlebars.registerHelper 'json', (obj) ->
     JSON.stringify(obj)
 
+  Handlebars.registerHelper 'list', (arr) ->
+    if arr then arr.join(', ') else ''
+
   Handlebars.registerHelper 'default', (value, defaultValue) ->
     return value if value
     return defaultValue

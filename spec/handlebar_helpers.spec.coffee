@@ -15,6 +15,18 @@ define ['brace', 'handlebars'], (Brace, Handlebars) ->
         str = Handlebars.helpers.json(null)
         expect(str).toBe('null')
 
+    describe '#list', ->
+
+      it 'returns empty string for a null value', ->
+        expect(Handlebars.helpers.list(null)).toBe('')
+
+      it 'returns empty string for empty array', ->
+        expect(Handlebars.helpers.list([])).toBe('')
+
+      it 'returns items joined with comma', ->
+        result = Handlebars.helpers.list ['cat','dog','mouse']
+        expect(result).toBe('cat, dog, mouse')
+
     describe '#ifequal', ->
 
       context = null
