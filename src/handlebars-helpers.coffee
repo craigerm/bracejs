@@ -5,12 +5,10 @@
     if arr then arr.join(', ') else ''
 
   Handlebars.registerHelper 'default', (value, defaultValue) ->
-    return value if value
-    return defaultValue
+    value or defaultValue
 
   Handlebars.registerHelper 'ifempty', (arr, context) ->
-    context.fn(@) if arr.length == 0
-    context.inverse(@) if arr.length > 0
+    if arr.length is 0 then context.fn(@) else context.inverse(@)
 
   Handlebars.registerHelper 'ifequal', (a, b, context) ->
     if a is b
